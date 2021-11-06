@@ -5,7 +5,7 @@ import Poll from '../models/pollModel.js';
 // @route   GET /api/polls
 // @access  Public
 const getPolls = asyncHandler(async (req, res) => {
-  const polls = await Poll.find({});
+  const polls = await Poll.find({ title: { $regex: req.query.term ? req.query.term : '' } });
   res.json(polls);
 });
 
@@ -19,6 +19,11 @@ const createPoll = asyncHandler(async (req, res) => {
     createdBy: req.user._id,
     title: req.body.title,
   });
+
+  if (choices.length < 3 || choices.length > 10) {
+    res.status(400);
+    throw new Error('Add at least 3 choices and the upper limit for maximum choices is 10');
+  }
 
   if (pollExists) {
     res.status(409);
@@ -95,7 +100,59 @@ const updateSinglePoll = asyncHandler(async (req, res) => {
 const getSinglePoll = asyncHandler(async (req, res) => {
   const poll = await Poll.find({ _id: req.params.id });
 
-  if (pollExists) {
+  if (!poll) {
+    res.status(404);
+    throw new Error('Poll not found');
+  }
+
+  res.json(poll);
+});
+
+// @desc    Add your vote in a poll
+// @route   PUT /api/polls/:id/add_vote
+// @access  Private
+const addVoteToPoll = asyncHandler(async (req, res) => {
+  const poll = await Poll.findOne({ _id: req.params.id });
+
+  if (poll.createdBy === req.user._id) {
+    res.status(400);
+    throw new Error('You cannot vote on your own poll');
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const alreadyVoted = poll.votes.find((item) => item.voted_by.toHexString() === req.user._id.toHexString())
+  if (alreadyVoted) {
+    res.status(400);
+    throw new Error('You have already voted on this poll');
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  poll.votes.push({
+    voted_by: req.user._id,
+    selectedChoice: req.body.choice
+  });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  await poll.save();
+
+  if (!poll) {
+    res.status(404);
+    throw new Error('Poll not found');
+  }
+
+  res.json({ message: 'Successfully voted on this poll' });
+});
+
+// @desc    Remove your vote from a poll
+// @route   PUT /api/polls/:id/remove_vote
+// @access  Private
+const removeVoteToPoll = asyncHandler(async (req, res) => {
+  const poll = await Poll.find({ _id: req.params.id });
+
+  if (poll.createdBy === req.user._id) {
+    res.status(400);
+    throw new Error('You cannot vote on your own poll');
+  }
+
+  if (!poll) {
     res.status(404);
     throw new Error('Poll not found');
   }
@@ -110,4 +167,6 @@ export {
   getSinglePoll,
   deleteSinglePoll,
   updateSinglePoll,
+  addVoteToPoll,
+  removeVoteToPoll
 };

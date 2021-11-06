@@ -14,6 +14,19 @@ const pollSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    votes: [
+      {
+        voted_by: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: false,
+          ref: 'User',
+        },
+        selectedChoice: {
+          type: String,
+          required: true,
+        },
+      }
+    ],
     choices: [
       {
         name: {
@@ -24,13 +37,6 @@ const pollSchema = new mongoose.Schema(
           type: Date,
           default: Date.now,
         },
-        voted_by: [
-          {
-            type: mongoose.Schema.Types.ObjectId,
-            required: false,
-            ref: 'User',
-          },
-        ],
       },
     ],
   },
