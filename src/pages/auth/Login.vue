@@ -1,26 +1,27 @@
 <template>
-  <q-form @submit="onSubmit" class="q-gutter-md" id="clienttype-form">
+  <q-form @submit="onSubmit" class="q-gutter-md q-pa-md" id="register-form">
     <q-input
       outlined
       hide-bottom-space
-      :error="!!errors['name']"
-      :error-message="errors['name']"
-      id="name"
-      name="name"
-      label="Name"
+      :error="!!errors['email']"
+      :error-message="errors['email']"
+      id="email"
+      name="email"
+      label="Email"
       :errors="errors"
-      v-model="name"
+      v-model="email"
     ></q-input>
     <q-input
       outlined
       hide-bottom-space
-      :error="!!errors['description']"
-      :error-message="errors['description']"
-      id="description"
-      name="description"
-      label="Description"
+      type="password"
+      :error="!!errors['password']"
+      :error-message="errors['password']"
+      id="password"
+      name="password"
+      label="Enter Password"
       :errors="errors"
-      v-model="description"
+      v-model="password"
     ></q-input>
     <q-btn
       label="Submit"
@@ -35,33 +36,35 @@
 import { toFormValidator } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
 import {
-  ClientTypeCreatePayload,
-  ClientTypeCreatePayloadSchema,
-} from '../../validators/user';
+  LoginPayload,
+  LoginPayloadSchema,
+} from '../../composables/auth/model';
 import { defineComponent } from 'vue';
+import useAuth from '../../composables/auth/index';
 
 export default defineComponent({
   name: 'LoginPage',
   setup() {
-    const validationSchema = toFormValidator(ClientTypeCreatePayloadSchema);
+    const { success, login } = useAuth();
+    const validationSchema = toFormValidator(LoginPayloadSchema);
     const { handleSubmit, isSubmitting, errors } =
-      useForm<ClientTypeCreatePayload>({
+      useForm<LoginPayload>({
         validationSchema,
       });
-
-    const { value: name } = useField('name');
-    const { value: description } = useField('description');
-
-    const onSubmit = handleSubmit((values) => {
-      console.log(values);
+    const { value: email } = useField('email');
+    const { value: password } = useField('password');
+    
+    const onSubmit = handleSubmit(async (values) => {
+      await login(values);
     });
 
     return {
       isSubmitting,
       errors,
       onSubmit,
-      name,
-      description
+      email,
+      password,
+      success,
     };
   },
 });

@@ -6,14 +6,18 @@
   "author": "Amit P <aspper20@gmail.com>",
   "private": true,
   "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "quasar dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "build": "quasar build",
-    "dev": "quasar dev"
+    "build": "quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vee-validate/zod": "^4.5.3",
+    "@vueuse/core": "^6.8.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "quasar": "^2.0.0",
