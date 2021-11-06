@@ -39,8 +39,9 @@ import {
   LoginPayload,
   LoginPayloadSchema,
 } from '../../composables/auth/model';
-import { defineComponent } from 'vue';
+import { defineComponent, watchEffect } from 'vue';
 import useAuth from '../../composables/auth/index';
+import { Notify } from 'quasar';
 
 export default defineComponent({
   name: 'LoginPage',
@@ -56,6 +57,16 @@ export default defineComponent({
     
     const onSubmit = handleSubmit(async (values) => {
       await login(values);
+    });
+
+    watchEffect(() => {
+      if (success.value) {
+        Notify.create({
+          type: 'positive',
+          position: 'top',
+          message: 'Logged in successfully',
+        });
+      }
     });
 
     return {

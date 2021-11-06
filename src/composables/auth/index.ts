@@ -9,7 +9,7 @@ import { ref } from 'vue';
 import { Notify } from 'quasar';
 
 export const useAccessToken = createGlobalState(() => {
-  return useStorage<LoginResponse | null>('accessToken', <LoginResponse>{});
+  return useStorage<LoginResponse | null>('userData', <LoginResponse>{});
 });
 
 const accessToken = useAccessToken();
@@ -22,15 +22,6 @@ export default function useAuth() {
   const login = async (payload: LoginPayload) => {
     try {
       const { data } = await api.post<LoginResponse>('auth/login', payload);
-      if (data) {
-        Notify.create({
-          type: 'positive',
-          position: 'top',
-          message: 'Logged in successfully',
-        });
-      }
-      userId.value = data._id;
-      token.value = data.token;
       success.value = true;
       accessToken.value = data;
     } catch (err: any) {
@@ -50,6 +41,7 @@ export default function useAuth() {
       }
       userId.value = data._id;
       success.value = true;
+      accessToken.value = data;
     } catch (err: any) {
       success.value = false;
     }

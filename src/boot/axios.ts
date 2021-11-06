@@ -1,6 +1,7 @@
 import { boot } from 'quasar/wrappers';
-import axios, { AxiosInstance } from 'axios';
-
+import axios, { AxiosError, AxiosInstance } from 'axios';
+import { Notify } from 'quasar';
+import { useAccessToken } from '../composables/auth/index';
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
@@ -15,8 +16,47 @@ declare module '@vue/runtime-core' {
 // for each client)
 const api = axios.create({ baseURL: '/api/' });
 
-export default boot(({ app }) => {
+export default boot(({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
+
+  // Do not add headers for these urls
+  const noAuthUrls = ['auth/login', 'auth/register']
+
+  // Request interceptor
+  api.interceptors.request.use((config) => {
+    const accessToken = useAccessToken();
+    const newConfig = config;
+    if (accessToken.value) {
+      const token = accessToken.value.token;
+      if (token && noAuthUrls.indexOf(newConfig.url as any) === -1)  {
+        newConfig.headers.Authorization = 'Bearer ' + token;
+      }
+    }
+
+    return newConfig;
+  });
+
+  // Response interceptor
+  api.interceptors.response.use(
+    (res) => {
+      return res;
+    },
+    async (err: AxiosError) => {
+      Notify.create({
+        type: 'negative',
+        position: 'top',
+        message: err.response?.data.message
+          ? err.response.data.message
+          : 'Something went wrong',
+      });
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        const accessToken = useAccessToken();
+        accessToken.value = null;
+        await router.replace({ name: 'Login' });
+      }
+      throw err;
+    }
+  );
 
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
