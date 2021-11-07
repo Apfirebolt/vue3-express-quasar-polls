@@ -1,13 +1,15 @@
 <template>
   <app-page>
-    <p class="text-center text-h5 text-blue-5">Polls</p>
-    <q-btn
-      class="mobile-hide q-ml-md"
-      color="blue-7"
-      icon="add"
-      label="Add Poll"
-      :to="{ name: 'CreatePoll' }"
-    />
+    <div class="flex items-center justify-between q-px-md q-py-sm q-mt-md">
+      <p class="text-center text-h5 text-blue-5">Polls</p>
+      <q-btn
+        class="mobile-hide"
+        color="blue-7"
+        icon="add"
+        label="Add Poll"
+        :to="{ name: 'CreatePoll' }"
+      />
+    </div>
     <div class="q-pa-md row items-start justify-between q-gutter-md">
       <div v-for="poll in polls" :key="poll._id" class="col-sm-12 col-md-5">
         <q-card class="my-card">
@@ -88,8 +90,8 @@ export default defineComponent({
     };
 
     const goToUpdatePoll = (id: string) => {
-      router.push({ name: 'UpdatePoll', params: { pollId: id } })
-    }
+      router.push({ name: 'UpdatePoll', params: { pollId: id } });
+    };
 
     const openDeletePollModal = (id: string) => {
       isDeleteModalOpened.value = true;
@@ -117,7 +119,7 @@ export default defineComponent({
       deletePollConfirm,
       openDeletePollModal,
       deletePollMessage,
-      goToUpdatePoll
+      goToUpdatePoll,
     };
   },
 });

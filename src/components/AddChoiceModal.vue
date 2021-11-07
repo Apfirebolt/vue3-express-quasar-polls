@@ -18,7 +18,7 @@
         v-model="name"
       ></q-input>
       <q-btn
-        label="Submit"
+        label="Add Choice"
         color="primary"
         type="submit"
         class="q-my-md"

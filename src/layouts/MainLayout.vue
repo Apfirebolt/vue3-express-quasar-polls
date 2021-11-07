@@ -10,10 +10,10 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
         <q-toolbar-title>
           Quasar Polls
         </q-toolbar-title>
+        <q-btn flat round dense icon="logout" @click.prevent="logoutFunction" />
       </q-toolbar>
     </q-header>
 
@@ -49,15 +49,23 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import useAuth from '../composables/auth/index';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'MainLayout',
 
   setup () {
+    const router = useRouter();
     const leftDrawerOpen = ref(false)
-
+    const { logout } = useAuth();
+    const logoutFunction = () => {
+      logout();
+      router.push({ name: 'Login' });
+    }
     return {
       leftDrawerOpen,
+      logoutFunction,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },

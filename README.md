@@ -55,5 +55,17 @@ complex queries.
 
 ## Project Screenshots
 
-To be added later.
+Screenshots of few pages which are less likely to change in terms of design are added.
+
+Below is the screenshot of the Poll List page, it shows how polls would be displayed, there might be minor changes in it like who opened it and more in future.
+
+![alt text](./screenshots/poll_list.png)
+
+Adding a poll screenshot
+
+![alt text](./screenshots/add_poll.png)
+
+Adding choices in the poll while creating it through modals.
+
+![alt text](./screenshots/add_choice.png)
 
