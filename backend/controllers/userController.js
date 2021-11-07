@@ -5,7 +5,8 @@ import User from '../models/userModel.js';
 // @route   GET /api/users
 // @access  Public
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({ username: { $regex: req.query.term ? req.query.term : '' } });
+  const users = await User.find({ username: { $regex: req.query.term ? req.query.term : '' } })
+  .select('-password');
   res.json(users);
 });
 

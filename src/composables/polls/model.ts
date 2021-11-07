@@ -11,6 +11,8 @@ export interface Poll {
   _id: string;
   title: string;
   description: string;
+  createdBy: string;
+  choices: Choice[];
 }
 
 export const ChoicePayloadSchema = zobject({

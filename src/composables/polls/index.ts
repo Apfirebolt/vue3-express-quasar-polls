@@ -6,7 +6,7 @@ import {
 import { ref } from 'vue';
 export default function usePolls() {
   const poll = ref<Poll>();
-  const polls = ref<Poll[]>();
+  const polls = ref<Poll[]>([]);
   const success = ref<boolean>();
   const error = ref<Error>();
 
@@ -48,10 +48,22 @@ export default function usePolls() {
     }
   };
 
+  const deletePoll = async (pollId: string) => {
+    try {
+      await api.delete<Poll>(`polls/${pollId}`);
+      success.value = true;
+      error.value = undefined;
+    } catch (err: any) {
+      success.value = false;
+      error.value = err;
+    }
+  };
+
   return {
     list,
     single,
     create,
+    deletePoll,
     success,
     error,
     polls,

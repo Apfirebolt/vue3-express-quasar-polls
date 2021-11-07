@@ -1,13 +1,17 @@
 <template>
-  <q-page>
+  <app-page>
     <p>Detail User Page</p>
-  </q-page>
+  </app-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import AppPage from 'src/hoc/AppPage.vue';
 
 export default defineComponent({
   name: 'DetailUser',
+  components: {
+    AppPage
+  }
 });
 </script>

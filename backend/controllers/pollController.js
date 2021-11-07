@@ -98,7 +98,7 @@ const updateSinglePoll = asyncHandler(async (req, res) => {
 // @route   GET /api/polls/:id
 // @access  Public
 const getSinglePoll = asyncHandler(async (req, res) => {
-  const poll = await Poll.find({ _id: req.params.id });
+  const poll = await Poll.findOne({ _id: req.params.id });
 
   if (!poll) {
     res.status(404);
