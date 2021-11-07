@@ -8,6 +8,7 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 // import routes
 import authRoutes from './routes/authRoutes.js';
 import pollRoutes from './routes/pollRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/polls', pollRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Success' });
