@@ -14,8 +14,6 @@
         <q-toolbar-title>
           Quasar Polls
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -78,6 +76,11 @@ export default defineComponent({
           icon: 'people',
           text: 'Users',
           route: { name: 'Users' },
+        },
+        {
+          icon: 'settings',
+          text: 'Profile',
+          route: { name: 'Settings' },
         },
       ],
     }
