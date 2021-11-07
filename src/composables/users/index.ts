@@ -5,7 +5,7 @@ import {
 import { ref } from 'vue';
 export default function useUsers() {
   const user = ref<User>();
-  const users = ref<User[]>();
+  const users = ref<User[]>([]);
   const success = ref<boolean>();
   const error = ref<Error>();
 

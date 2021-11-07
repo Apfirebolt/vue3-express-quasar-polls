@@ -2,10 +2,11 @@ import { api } from 'src/boot/axios';
 import {
   Poll,
   CreatePollPayload,
+  PollUpdatePayload
 } from './model';
 import { ref } from 'vue';
 export default function usePolls() {
-  const poll = ref<Poll>();
+  const poll = ref<Poll | any>({});
   const polls = ref<Poll[]>([]);
   const success = ref<boolean>();
   const error = ref<Error>();
@@ -13,7 +14,6 @@ export default function usePolls() {
   const list = async () => {
     try {
       const { data } = await api.get<Poll[]>('polls');
-      success.value = true;
       error.value = undefined;
       polls.value = data;
     } catch (err: any) {
@@ -27,7 +27,6 @@ export default function usePolls() {
       const { data } = await api.get<Poll>(
         'polls/' + pollId
       );
-      success.value = true;
       error.value = undefined;
       poll.value = data;
     } catch (err: any) {
@@ -42,6 +41,20 @@ export default function usePolls() {
       success.value = true;
       error.value = undefined;
       poll.value = data;
+      success.value = false;
+    } catch (err: any) {
+      success.value = false;
+      error.value = err;
+    }
+  };
+
+  const update = async (pollId: string, payload: PollUpdatePayload) => {
+    try {
+      const { data } = await api.put<Poll>(`polls/${pollId}`, payload);
+      success.value = true;
+      error.value = undefined;
+      poll.value = data;
+      success.value = false;
     } catch (err: any) {
       success.value = false;
       error.value = err;
@@ -53,6 +66,7 @@ export default function usePolls() {
       await api.delete<Poll>(`polls/${pollId}`);
       success.value = true;
       error.value = undefined;
+      success.value = false;
     } catch (err: any) {
       success.value = false;
       error.value = err;
@@ -63,6 +77,7 @@ export default function usePolls() {
     list,
     single,
     create,
+    update,
     deletePoll,
     success,
     error,

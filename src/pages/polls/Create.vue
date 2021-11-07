@@ -1,5 +1,6 @@
 <template>
   <app-page>
+    <p class="text-center text-h5 text-blue-5">Create Poll</p>
     <q-form @submit="onSubmit" class="q-gutter-md q-pa-md" id="register-form">
       <q-input
         outlined
@@ -80,7 +81,7 @@ import { Notify } from 'quasar';
 import AppPage from 'src/hoc/AppPage.vue';
 
 export default defineComponent({
-  name: 'LoginPage',
+  name: 'CreatePollPage',
   components: {
     AddChoiceModal,
     AppPage,

@@ -12,6 +12,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  createdAt?: string;
 }
 
 export interface LoginResponse extends User {

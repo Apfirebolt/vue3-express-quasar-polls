@@ -1,6 +1,13 @@
 <template>
   <app-page>
     <p class="text-center text-h5 text-blue-5">Polls</p>
+    <q-btn
+      class="mobile-hide q-ml-md"
+      color="blue-7"
+      icon="add"
+      label="Add Poll"
+      :to="{ name: 'CreatePoll' }"
+    />
     <div class="q-pa-md row items-start justify-between q-gutter-md">
       <div v-for="poll in polls" :key="poll._id" class="col-sm-12 col-md-5">
         <q-card class="my-card">
@@ -29,6 +36,12 @@
               color="red-5"
               @click.prevent="openDeletePollModal(poll._id)"
               >Delete</q-btn
+            >
+            <q-btn
+              v-if="poll.createdBy === accessToken._id"
+              color="grey-8"
+              @click.prevent="goToUpdatePoll(poll._id)"
+              >Update</q-btn
             >
             <q-btn color="green-7" @click.prevent="goToPollDetail(poll._id)"
               >Details</q-btn
@@ -74,6 +87,10 @@ export default defineComponent({
       router.push({ name: 'PollDetail', params: { pollId: id } });
     };
 
+    const goToUpdatePoll = (id: string) => {
+      router.push({ name: 'UpdatePoll', params: { pollId: id } })
+    }
+
     const openDeletePollModal = (id: string) => {
       isDeleteModalOpened.value = true;
       selectedPoll.value = id;
@@ -100,6 +117,7 @@ export default defineComponent({
       deletePollConfirm,
       openDeletePollModal,
       deletePollMessage,
+      goToUpdatePoll
     };
   },
 });
