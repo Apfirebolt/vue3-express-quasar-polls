@@ -98,7 +98,8 @@ const updateSinglePoll = asyncHandler(async (req, res) => {
 // @route   GET /api/polls/:id
 // @access  Public
 const getSinglePoll = asyncHandler(async (req, res) => {
-  const poll = await Poll.findOne({ _id: req.params.id });
+  const poll = await Poll.findOne({ _id: req.params.id })
+    .populate('votes.voted_by', 'username');
 
   if (!poll) {
     res.status(404);
@@ -145,19 +146,18 @@ const addVoteToPoll = asyncHandler(async (req, res) => {
 // @route   PUT /api/polls/:id/remove_vote
 // @access  Private
 const removeVoteToPoll = asyncHandler(async (req, res) => {
-  const poll = await Poll.find({ _id: req.params.id });
-
-  if (poll.createdBy === req.user._id) {
-    res.status(400);
-    throw new Error('You cannot vote on your own poll');
-  }
+  const poll = await Poll.findOneAndUpdate({ _id: req.params.id },
+    {
+      $pull: { 'votes': { 'voted_by': req.user._id }}
+    },
+    {'new': true});
 
   if (!poll) {
     res.status(404);
     throw new Error('Poll not found');
   }
 
-  res.json(poll);
+  res.json({ message: 'Removed your vote from this poll' });
 });
 
 export {

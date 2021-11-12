@@ -35,7 +35,7 @@
         :errors="errors"
         v-model="firstName"
       ></q-input>
-      <q-input
+       <q-input
         outlined
         hide-bottom-space
         :error="!!errors['lastName']"
@@ -46,6 +46,7 @@
         :errors="errors"
         v-model="lastName"
       ></q-input>
+      <q-separator class="q-my-md"></q-separator>
       <q-input
         outlined
         hide-bottom-space

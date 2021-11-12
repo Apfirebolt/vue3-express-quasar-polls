@@ -17,6 +17,7 @@ export interface User {
 
 export interface LoginResponse extends User {
   token: string;
+  _id: string;
 }
 
 export const UserCreatePayloadSchema = zobject({

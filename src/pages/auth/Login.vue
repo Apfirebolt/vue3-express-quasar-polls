@@ -32,6 +32,9 @@
           type="submit"
           :loading="isSubmitting"
         />
+        <p>
+          Don't have an account ? <router-link :to="{ name: 'Register' }"> Register here </router-link> 
+        </p>
       </q-form>
     </div>
   </div>

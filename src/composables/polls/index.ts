@@ -1,4 +1,5 @@
 import { api } from 'src/boot/axios';
+import { Notify } from 'quasar';
 import {
   Poll,
   CreatePollPayload,
@@ -41,7 +42,6 @@ export default function usePolls() {
       success.value = true;
       error.value = undefined;
       poll.value = data;
-      success.value = false;
     } catch (err: any) {
       success.value = false;
       error.value = err;
@@ -54,7 +54,6 @@ export default function usePolls() {
       success.value = true;
       error.value = undefined;
       poll.value = data;
-      success.value = false;
     } catch (err: any) {
       success.value = false;
       error.value = err;
@@ -66,7 +65,40 @@ export default function usePolls() {
       await api.delete<Poll>(`polls/${pollId}`);
       success.value = true;
       error.value = undefined;
+    } catch (err: any) {
       success.value = false;
+      error.value = err;
+    }
+  };
+
+  const addVote = async (pollId: string, choice: string) => {
+    try {
+      await api.put<Poll>(`polls/${pollId}/add_vote`, {
+        choice
+      });
+      success.value = true;
+      Notify.create({
+        type: 'positive',
+        position: 'top',
+        message: 'Voted on poll successfully',
+      });
+      error.value = undefined;
+    } catch (err: any) {
+      success.value = false;
+      error.value = err;
+    }
+  };
+
+  const removeVote = async (pollId: string) => {
+    try {
+      await api.put<Poll>(`polls/${pollId}/remove_vote`);
+      success.value = true;
+      Notify.create({
+        type: 'positive',
+        position: 'top',
+        message: 'Vote removed from the poll successfully',
+      });
+      error.value = undefined;
     } catch (err: any) {
       success.value = false;
       error.value = err;
@@ -79,6 +111,8 @@ export default function usePolls() {
     create,
     update,
     deletePoll,
+    removeVote,
+    addVote,
     success,
     error,
     polls,

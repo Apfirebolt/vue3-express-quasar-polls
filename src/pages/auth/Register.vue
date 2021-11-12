@@ -65,6 +65,10 @@
           type="submit"
           :loading="isSubmitting"
         />
+        <p>
+          Already have an account ?
+          <router-link :to="{ name: 'Login' }"> Login here </router-link>
+        </p>
       </q-form>
     </div>
   </div>
