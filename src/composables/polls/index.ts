@@ -6,7 +6,7 @@ import {
 } from './model';
 import { ref } from 'vue';
 export default function usePolls() {
-  const poll = ref<Poll | any>({});
+  const poll = ref<Poll | any>(null);
   const polls = ref<Poll[]>([]);
   const success = ref<boolean>();
   const error = ref<Error>();

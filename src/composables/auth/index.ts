@@ -1,6 +1,7 @@
 import { createGlobalState, useStorage } from '@vueuse/core';
 import {
   LoginPayload,
+  User,
   LoginResponse,
   UserCreatePayload,
 } from './model';
@@ -18,6 +19,7 @@ export default function useAuth() {
   const success = ref<boolean>(false);
   const userId = ref<string>();
   const token = ref<string>();
+  const profileData = ref<User>();
 
   const login = async (payload: LoginPayload) => {
     try {
@@ -60,6 +62,17 @@ export default function useAuth() {
     }
   };
 
+  const profile = async () => {
+    try {
+      const { data } = await api.get<User>('auth/profile');
+      if (data) {
+        profileData.value = data;
+      }
+    } catch (err: any) {
+      success.value = false;
+    }
+  };
+
   return {
     userId,
     token,
@@ -67,5 +80,7 @@ export default function useAuth() {
     register,
     logout,
     success,
+    profile,
+    profileData
   };
 }
