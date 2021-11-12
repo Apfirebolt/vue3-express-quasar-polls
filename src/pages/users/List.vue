@@ -1,6 +1,7 @@
 <template>
   <app-page>
     <p class="text-center text-h5 text-blue-5">Users</p>
+    <search-form @onSearch="searchUserByTerm" />
     <div class="q-pa-md row items-start justify-between q-gutter-md">
       <div v-for="user in users" :key="user._id" class="col-sm-12 col-md-5">
         <q-card class="my-card">
@@ -30,15 +31,23 @@
 import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import useUsers from '../../composables/users/index';
+import SearchForm from '../../components/SearchBar.vue';
 import AppPage from 'src/hoc/AppPage.vue';
 
 export default defineComponent({
   name: 'ListUsers',
   components: {
     AppPage,
+    SearchForm,
   },
   setup() {
     const { users, list } = useUsers();
+
+    const searchUserByTerm = (term: string) => {
+      console.log('User term ', term);
+      list(term);
+    }
+
     list();
     const filterDate = (dateString: string) => {
       return date.formatDate(dateString, 'YYYY-MM-DD')
@@ -49,7 +58,8 @@ export default defineComponent({
     return {
       users,
       goToUserDetail,
-      filterDate
+      filterDate,
+      searchUserByTerm
     };
   },
 });

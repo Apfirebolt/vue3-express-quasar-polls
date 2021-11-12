@@ -11,9 +11,9 @@ export default function usePolls() {
   const success = ref<boolean>();
   const error = ref<Error>();
 
-  const list = async () => {
+  const list = async (searchTerm = '') => {
     try {
-      const { data } = await api.get<Poll[]>('polls');
+      const { data } = await api.get<Poll[]>('polls', { params: { term: searchTerm } });
       error.value = undefined;
       polls.value = data;
     } catch (err: any) {

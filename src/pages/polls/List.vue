@@ -10,6 +10,7 @@
         :to="{ name: 'CreatePoll' }"
       />
     </div>
+    <search-poll @onSearch="searchPollsByTerm" />
     <div class="q-pa-md row items-start justify-between q-gutter-md">
       <div v-for="poll in polls" :key="poll._id" class="col-sm-12 col-md-5">
         <q-card class="my-card">
@@ -65,6 +66,7 @@
 import { defineComponent, ref } from 'vue';
 import usePolls from '../../composables/polls/index';
 import DeletePollModal from '../../components/DeletePollModal.vue';
+import SearchPoll from '../../components/SearchBar.vue';
 import AppPage from 'src/hoc/AppPage.vue';
 import { useRouter } from 'vue-router';
 import { useAccessToken } from '../../composables/auth';
@@ -75,6 +77,7 @@ export default defineComponent({
   components: {
     AppPage,
     DeletePollModal,
+    SearchPoll,
   },
   setup() {
     const accessToken = useAccessToken();
@@ -102,6 +105,10 @@ export default defineComponent({
       }
     };
 
+    const searchPollsByTerm = (term: string) => {
+      list(term);
+    }
+
     const deletePollConfirm = async () => {
       await deletePoll(selectedPoll.value);
       Notify.create({
@@ -120,6 +127,7 @@ export default defineComponent({
       openDeletePollModal,
       deletePollMessage,
       goToUpdatePoll,
+      searchPollsByTerm
     };
   },
 });

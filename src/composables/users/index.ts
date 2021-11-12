@@ -9,9 +9,9 @@ export default function useUsers() {
   const success = ref<boolean>();
   const error = ref<Error>();
 
-  const list = async () => {
+  const list = async (searchTerm = '') => {
     try {
-      const { data } = await api.get<User[]>('users');
+      const { data } = await api.get<User[]>('users', { params: { term: searchTerm } });
       success.value = true;
       error.value = undefined;
       users.value = data;

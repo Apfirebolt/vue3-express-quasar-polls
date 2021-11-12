@@ -64,6 +64,7 @@ export default function useAuth() {
 
   const profile = async () => {
     try {
+      
       const { data } = await api.get<User>('auth/profile');
       if (data) {
         profileData.value = data;
