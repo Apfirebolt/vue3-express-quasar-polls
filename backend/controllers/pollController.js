@@ -43,7 +43,13 @@ const createPoll = asyncHandler(async (req, res) => {
 // @route   GET /api/myPolls
 // @access  Private
 const getUserPolls = asyncHandler(async (req, res) => {
-  const userPolls = await Poll.find({ createdBy: req.user._id });
+  let user;
+  if (req.params.id) {
+    user = req.params.id;
+  } else {
+    user = req.user._id
+  }
+  const userPolls = await Poll.find({ createdBy: user });
 
   res.json(userPolls);
 });

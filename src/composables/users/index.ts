@@ -21,10 +21,10 @@ export default function useUsers() {
     }
   };
 
-  const single = async (userId: string) => {
+  const single = async (username: string) => {
     try {
       const { data } = await api.get<User>(
-        'users/' + userId
+        'users/' + username
       );
       success.value = true;
       error.value = undefined;

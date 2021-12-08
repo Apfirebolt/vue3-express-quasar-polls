@@ -20,7 +20,8 @@ const getUsers = asyncHandler(async (req, res) => {
 // @route   GET /api/users/:id
 // @access  Public
 const getSingleUser = asyncHandler(async (req, res) => {
-  const user = await User.find({ _id: req.params.id });
+  const user = await User.findOne({ username: req.params.username })
+  .select('-password');
 
   if (!user) {
     res.status(404);

@@ -17,7 +17,7 @@
 
           <q-card-actions align="right">
             <p class="text-red-5 q-mr-md">Created At {{ filterDate(user.createdAt) }}</p>
-            <q-btn color="green-7" @click.prevent="goToUserDetail(user._id)"
+            <q-btn color="green-7" @click.prevent="goToUserDetail(user.username)"
               >Details</q-btn
             >
           </q-card-actions>
@@ -30,6 +30,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { date } from 'quasar';
+import { useRouter } from 'vue-router';
 import useUsers from '../../composables/users/index';
 import SearchForm from '../../components/SearchBar.vue';
 import AppPage from 'src/hoc/AppPage.vue';
@@ -42,7 +43,7 @@ export default defineComponent({
   },
   setup() {
     const { users, list } = useUsers();
-
+    const router = useRouter();
     const searchUserByTerm = (term: string) => {
       console.log('User term ', term);
       list(term);
@@ -52,8 +53,8 @@ export default defineComponent({
     const filterDate = (dateString: string) => {
       return date.formatDate(dateString, 'YYYY-MM-DD')
     }
-    const goToUserDetail = (userId: string) => {
-      console.log(userId);
+    const goToUserDetail = (username: string) => {
+      router.push({ name: 'UserDetail', params: { username } })
     };
     return {
       users,

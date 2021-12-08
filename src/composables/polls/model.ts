@@ -7,12 +7,23 @@ import {
 export interface Choice {
   name: string;
 }
+
+export interface VoteUser {
+  username: string;
+  _id: string;
+}
+
+export interface VotePoll {
+  voted_by: VoteUser;
+  selectedChoice: string;
+}
 export interface Poll {
   _id: string;
   title: string;
   description: string;
   createdBy: string;
   choices: Choice[];
+  votes: VotePoll[];
 }
 
 export const ChoicePayloadSchema = zobject({

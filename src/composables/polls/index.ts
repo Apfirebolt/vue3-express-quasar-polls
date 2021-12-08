@@ -105,6 +105,18 @@ export default function usePolls() {
     }
   };
 
+  const userPolls = async (userId: string) => {
+    try {
+      const { data } = await api.get<Poll[]>(`${userId}/polls`);
+      success.value = true;
+      error.value = undefined;
+      polls.value = data;
+    } catch (err: any) {
+      success.value = false;
+      error.value = err;
+    }
+  }; 
+
   return {
     list,
     single,
@@ -112,6 +124,7 @@ export default function usePolls() {
     update,
     deletePoll,
     removeVote,
+    userPolls,
     addVote,
     success,
     error,

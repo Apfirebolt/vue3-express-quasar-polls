@@ -66,6 +66,7 @@
         :loading="isSubmitting"
       />
     </q-form>
+    {{ profileData }}
   </q-page>
 </template>
 
@@ -76,16 +77,16 @@ import { toFormValidator } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
 import { Notify } from 'quasar';
 import {
-  UserCreatePayload,
-  UserCreatePayloadSchema,
+  UserUpdatePayload,
+  UserUpdatePayloadSchema
 } from '../../composables/auth/model';
 
 export default defineComponent({
   name: 'SettingsPage',
   setup() {
-    const { profile, profileData, success, register } = useAuth();
-    const validationSchema = toFormValidator(UserCreatePayloadSchema);
-    const { handleSubmit, isSubmitting, errors } = useForm<UserCreatePayload>({
+    const { profile, profileData, success } = useAuth();
+    const validationSchema = toFormValidator(UserUpdatePayloadSchema);
+    const { handleSubmit, isSubmitting, errors } = useForm<UserUpdatePayload>({
       validationSchema,
     });
 
@@ -95,8 +96,8 @@ export default defineComponent({
     const { value: email } = useField('email');
     const { value: password } = useField('password');
 
-    const onSubmit = handleSubmit(async (values) => {
-      await register(values);
+    const onSubmit = handleSubmit((values) => {
+      console.log(values);
     });
 
     watchEffect(() => {
