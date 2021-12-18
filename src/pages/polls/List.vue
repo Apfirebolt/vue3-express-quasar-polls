@@ -33,22 +33,27 @@
           </q-list>
           <q-separator />
 
-          <q-card-actions align="right">
-            <q-btn
-              v-if="poll.createdBy === accessToken._id"
-              color="red-5"
-              @click.prevent="openDeletePollModal(poll._id)"
-              >Delete</q-btn
-            >
-            <q-btn
-              v-if="poll.createdBy === accessToken._id"
-              color="grey-8"
-              @click.prevent="goToUpdatePoll(poll._id)"
-              >Update</q-btn
-            >
-            <q-btn color="green-7" @click.prevent="goToPollDetail(poll._id)"
-              >Details</q-btn
-            >
+          <q-card-actions class="flex justify-between">
+            <p class="text-weight-bold">Created by {{ poll.createdBy.username }}</p>
+            <div>
+              <q-btn
+                v-if="poll.createdBy._id == accessToken._id"
+                color="red-5"
+                class="q-ma-sm"
+                @click.prevent="openDeletePollModal(poll._id)"
+                >Delete</q-btn
+              >
+              <q-btn
+                v-if="poll.createdBy._id == accessToken._id"
+                color="grey-8"
+                class="q-ma-sm"
+                @click.prevent="goToUpdatePoll(poll._id)"
+                >Update</q-btn
+              >
+              <q-btn color="green-7" class="q-ma-sm" @click.prevent="goToPollDetail(poll._id)"
+                >Details</q-btn
+              >
+            </div>
           </q-card-actions>
         </q-card>
       </div>
@@ -127,7 +132,7 @@ export default defineComponent({
       openDeletePollModal,
       deletePollMessage,
       goToUpdatePoll,
-      searchPollsByTerm
+      searchPollsByTerm,
     };
   },
 });

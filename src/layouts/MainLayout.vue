@@ -85,11 +85,6 @@ export default defineComponent({
           text: 'Users',
           route: { name: 'Users' },
         },
-        {
-          icon: 'settings',
-          text: 'Profile',
-          route: { name: 'Settings' },
-        },
       ],
     }
   }

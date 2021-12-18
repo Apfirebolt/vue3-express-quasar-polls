@@ -1,3 +1,7 @@
+import User from 'app/backend/models/userModel';
+import {
+  Poll,
+} from '../polls/model';
 import { object as zobject, string as zstring, infer as zinfer } from 'zod';
 
 export const PasswordSchema = zstring({

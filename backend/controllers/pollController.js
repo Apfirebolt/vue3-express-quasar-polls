@@ -5,7 +5,8 @@ import Poll from '../models/pollModel.js';
 // @route   GET /api/polls
 // @access  Public
 const getPolls = asyncHandler(async (req, res) => {
-  const polls = await Poll.find({ title: { $regex: req.query.term ? req.query.term : '' } });
+  const polls = await Poll.find({ title: { $regex: req.query.term ? req.query.term : '' } })
+  .populate('createdBy', 'username');
   res.json(polls);
 });
 
@@ -49,7 +50,8 @@ const getUserPolls = asyncHandler(async (req, res) => {
   } else {
     user = req.user._id
   }
-  const userPolls = await Poll.find({ createdBy: user });
+  const userPolls = await Poll.find({ createdBy: user })
+    .populate('createdBy', 'username')
 
   res.json(userPolls);
 });

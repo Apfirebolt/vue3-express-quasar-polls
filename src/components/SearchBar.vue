@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watchEffect } from 'vue';
 
 export default defineComponent({
   name: 'SearchForm',
@@ -32,6 +32,12 @@ export default defineComponent({
     const onSubmit = () =>  {
       emit('onSearch', searchText.value);
     };
+
+    watchEffect(() => {
+      if (searchText.value.length < 3) {
+        emit('onSearch', undefined);
+      }
+    });
 
     return {
       searchText,

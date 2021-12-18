@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import Poll from '../models/pollModel.js';
 
 // @desc    Get all users or search user
 // @route   GET /api/users
@@ -23,12 +24,14 @@ const getSingleUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ username: req.params.username })
   .select('-password');
 
-  if (!user) {
+  const polls = await Poll.find({ createdBy: user._id })
+
+  if (!user || !polls) {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error('User or Polls not found');
   }
 
-  res.json(user);
+  res.json({ user, polls });
 });
 
 export {

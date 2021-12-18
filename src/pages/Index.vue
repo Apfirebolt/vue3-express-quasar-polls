@@ -1,6 +1,9 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <p>Home Page</p>
+  <q-page class="text-center">
+    <h1>Quasar Polls App</h1>
+    <p class="text-indigo-13">
+      Create Polls, Search for Polls and Users, voice your opinions through polls
+    </p>
   </q-page>
 </template>
 
