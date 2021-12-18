@@ -51,7 +51,6 @@ const getUserPolls = asyncHandler(async (req, res) => {
     user = req.user._id
   }
   const userPolls = await Poll.find({ createdBy: user })
-    .populate('createdBy', 'username')
 
   res.json(userPolls);
 });

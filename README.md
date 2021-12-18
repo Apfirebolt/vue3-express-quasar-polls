@@ -11,6 +11,8 @@ Made with ❤️ by **[@apfirebolt](https://github.com/Apfirebolt/)**
 - Each user can perform CRUD on Polls.
 - Each poll would have choices, choices can be anywhere between 3 to 10.
 - Users would be able to see which users voted on what option on each poll, they would also be able to search for polls and vote.
+- User Search functionality added, users can be searched and on clicking it would redirect to their detail page.
+- On the details page of the user, all polls created by the user would be displayed in tabular format.
 
 ## Built With
 
