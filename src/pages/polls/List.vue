@@ -69,7 +69,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import usePolls from '../../composables/polls/index';
+import list from '../../composables/polls/index';
+import { useQuery } from 'vue-query';
 import DeletePollModal from '../../components/DeletePollModal.vue';
 import SearchPoll from '../../components/SearchBar.vue';
 import AppPage from 'src/hoc/AppPage.vue';
@@ -85,13 +86,14 @@ export default defineComponent({
     SearchPoll,
   },
   setup() {
+    const { isLoading, isError, data: pollData, error } = useQuery(['polls'], () => {
+      return list();
+    });
     const accessToken = useAccessToken();
-    const { polls, list, deletePoll } = usePolls();
     const router = useRouter();
     const isDeleteModalOpened = ref<boolean>(false);
     const deletePollMessage = ref<string>('');
     const selectedPoll = ref<string>('');
-    list();
 
     const goToPollDetail = (id: string) => {
       router.push({ name: 'PollDetail', params: { pollId: id } });
@@ -104,7 +106,8 @@ export default defineComponent({
     const openDeletePollModal = (id: string) => {
       isDeleteModalOpened.value = true;
       selectedPoll.value = id;
-      const selectPoll = polls.value.find((item) => item._id === id);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const selectPoll = pollData?.results.find((item) => item._id === id);
       if (selectPoll) {
         deletePollMessage.value = `Are you sure you want to delete the poll titled "${selectPoll.title}"`;
       }
@@ -112,10 +115,10 @@ export default defineComponent({
 
     const searchPollsByTerm = (term: string) => {
       list(term);
-    }
+    };
 
     const deletePollConfirm = async () => {
-      await deletePoll(selectedPoll.value);
+      await deletePoll(selectedPoll.value as any);
       Notify.create({
         type: 'positive',
         position: 'top',
@@ -123,8 +126,12 @@ export default defineComponent({
       });
       list();
     };
+
     return {
       polls,
+      isLoading,
+      isError,
+      error,
       isDeleteModalOpened,
       goToPollDetail,
       accessToken,

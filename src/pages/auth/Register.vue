@@ -82,12 +82,14 @@ import {
   UserCreatePayloadSchema,
 } from '../../composables/auth/model';
 import { defineComponent, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 import useAuth from '../../composables/auth/index';
 import { Notify } from 'quasar';
 
 export default defineComponent({
   name: 'RegisterPage',
   setup() {
+    const router = useRouter();
     const { success, register } = useAuth();
     const validationSchema = toFormValidator(UserCreatePayloadSchema);
     const { handleSubmit, isSubmitting, errors } = useForm<UserCreatePayload>({
@@ -109,8 +111,9 @@ export default defineComponent({
         Notify.create({
           type: 'positive',
           position: 'top',
-          message: 'Register successfully',
+          message: 'Registered successfully',
         });
+        router.push({ name: 'Login' });
       }
     });
 

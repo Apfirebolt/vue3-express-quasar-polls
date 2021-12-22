@@ -1,10 +1,5 @@
 import { createGlobalState, useStorage } from '@vueuse/core';
-import {
-  LoginPayload,
-  User,
-  LoginResponse,
-  UserCreatePayload,
-} from './model';
+import { LoginPayload, User, LoginResponse, UserCreatePayload } from './model';
 import { api } from 'src/boot/axios';
 import { ref } from 'vue';
 import { Notify } from 'quasar';
@@ -35,15 +30,10 @@ export default function useAuth() {
     try {
       const { data } = await api.post<LoginResponse>('auth/register', payload);
       if (data) {
-        Notify.create({
-          type: 'positive',
-          position: 'top',
-          message: 'Registered successfully',
-        });
+        userId.value = data._id;
+        success.value = true;
+        accessToken.value = data;
       }
-      userId.value = data._id;
-      success.value = true;
-      accessToken.value = data;
     } catch (err: any) {
       success.value = false;
     }
@@ -64,7 +54,6 @@ export default function useAuth() {
 
   const profile = async () => {
     try {
-      
       const { data } = await api.get<User>('auth/profile');
       if (data) {
         profileData.value = data;
@@ -82,6 +71,6 @@ export default function useAuth() {
     logout,
     success,
     profile,
-    profileData
+    profileData,
   };
 }

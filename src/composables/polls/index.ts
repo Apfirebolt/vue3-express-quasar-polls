@@ -13,14 +13,8 @@ export default function usePolls() {
   const error = ref<Error>();
 
   const list = async (searchTerm = '') => {
-    try {
-      const { data } = await api.get<Poll[]>('polls', { params: { term: searchTerm } });
-      error.value = undefined;
-      polls.value = data;
-    } catch (err: any) {
-      success.value = false;
-      error.value = err;
-    }
+    const { data } = await api.get<{ results: Poll[]; rowsNumber: number }>('polls', { params: { term: searchTerm } });
+    return data;
   };
 
   const single = async (pollId: string) => {

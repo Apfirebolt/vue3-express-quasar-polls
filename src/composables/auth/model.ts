@@ -19,6 +19,11 @@ export interface User {
   createdAt?: string;
 }
 
+export interface UserPoll {
+  user : User;
+  polls : Poll[];
+}
+
 export interface LoginResponse extends User {
   token: string;
   _id: string;
