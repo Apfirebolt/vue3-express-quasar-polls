@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent, computed, watchEffect } from 'vue';
 import AppPage from 'src/hoc/AppPage.vue';
-import usePolls from '../../composables/polls/index';
+import { getSinglePoll } from '../../composables/polls/index';
 import { useAccessToken } from '../../composables/auth';
 import { useRoute } from 'vue-router';
 
@@ -65,7 +65,7 @@ export default defineComponent({
     const route = useRoute();
     const accessToken = useAccessToken();
     const { poll, single, addVote, success, removeVote } = usePolls();
-    single(route.params.pollId as string);
+    getSinglePoll(route.params.pollId as string);
 
     watchEffect(() => {
       if (success.value) {

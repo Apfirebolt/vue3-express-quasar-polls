@@ -75,7 +75,7 @@ import {
   PollCreatePayloadSchema,
 } from '../../composables/polls/model';
 import { defineComponent, watchEffect, ref } from 'vue';
-import usePolls from '../../composables/polls/index';
+import { createPoll } from '../../composables/polls/index';
 import { useRouter } from 'vue-router';
 import { Notify } from 'quasar';
 import AppPage from 'src/hoc/AppPage.vue';
@@ -87,8 +87,7 @@ export default defineComponent({
     AppPage,
   },
   setup() {
-    const router = useRouter();
-    const { success, create } = usePolls();
+    // const router = useRouter();
     const isChoiceModalOpened = ref<boolean>(false);
     const choices = ref<Choice[]>([]);
     const validationSchema = toFormValidator(PollCreatePayloadSchema);
@@ -111,18 +110,7 @@ export default defineComponent({
           description: values.description,
           choices: choices.value,
         };
-        await create(payload);
-      }
-    });
-
-    watchEffect(() => {
-      if (success.value) {
-        Notify.create({
-          type: 'positive',
-          position: 'top',
-          message: 'Poll Created successfully',
-        });
-        router.push({ name: 'Polls' });
+        await createPoll(payload);
       }
     });
 
@@ -141,7 +129,6 @@ export default defineComponent({
       onSubmit,
       title,
       description,
-      success,
       isChoiceModalOpened,
       choices,
       addChoice,

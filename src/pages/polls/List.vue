@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import list from '../../composables/polls/index';
+import { getPolls } from '../../composables/polls/index';
 import { useQuery } from 'vue-query';
 import DeletePollModal from '../../components/DeletePollModal.vue';
 import SearchPoll from '../../components/SearchBar.vue';
@@ -87,7 +87,7 @@ export default defineComponent({
   },
   setup() {
     const { isLoading, isError, data: pollData, error } = useQuery(['polls'], () => {
-      return list();
+      return getPolls();
     });
     const accessToken = useAccessToken();
     const router = useRouter();
@@ -107,28 +107,28 @@ export default defineComponent({
       isDeleteModalOpened.value = true;
       selectedPoll.value = id;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      const selectPoll = pollData?.results.find((item) => item._id === id);
-      if (selectPoll) {
-        deletePollMessage.value = `Are you sure you want to delete the poll titled "${selectPoll.title}"`;
-      }
+      // const selectPoll = pollData?.results.find((item) => item._id === id);
+      // if (selectPoll) {
+      //   deletePollMessage.value = `Are you sure you want to delete the poll titled "${selectPoll.title}"`;
+      // }
     };
 
-    const searchPollsByTerm = (term: string) => {
-      list(term);
-    };
+    // const searchPollsByTerm = (term: string) => {
+    //   list(term);
+    // };
 
-    const deletePollConfirm = async () => {
-      await deletePoll(selectedPoll.value as any);
+    const deletePollConfirm = () => {
+      // await deletePoll(selectedPoll.value as any);
       Notify.create({
         type: 'positive',
         position: 'top',
         message: 'Poll deleted successfully',
       });
-      list();
+      // list();
     };
 
     return {
-      polls,
+      pollData,
       isLoading,
       isError,
       error,
@@ -139,7 +139,7 @@ export default defineComponent({
       openDeletePollModal,
       deletePollMessage,
       goToUpdatePoll,
-      searchPollsByTerm,
+      // searchPollsByTerm,
     };
   },
 });
